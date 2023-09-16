@@ -56,3 +56,29 @@ export class DoublyLinkedListNode<T> {
     this._prev = value;
   }
 }
+
+export class CircularLinkedListNode<T> {
+  private _data: T;
+  private _next: CircularLinkedListNode<T> | null;
+
+  constructor(data: T) {
+    this._data = data;
+    this._next = null;
+  }
+
+  get data(): T {
+    return this._data;
+  }
+
+  set data(data: T) {
+    this._data = data;
+  }
+
+  get next(): typeof this._next {
+    return this._next;
+  }
+
+  set next(next: typeof this._next) {
+    this._next = next;
+  }
+}
