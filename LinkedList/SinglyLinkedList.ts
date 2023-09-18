@@ -302,6 +302,18 @@ export class SinglyLinkedList<T> {
     return this;
   }
 
+  middleNode(): SinglyLinkedListNode<T> {
+    let fast = this.head;
+    let slow = this.head;
+
+    while (fast && fast.next) {
+      fast = fast.next.next;
+      slow = slow!.next;
+    }
+
+    return slow!;
+  }
+
   indexOf(data: T): number {
     let currNode = this._head;
     let i = 0;
@@ -384,13 +396,14 @@ console.log('To Array:', list.toArray());
 
 console.log('\n============ Index Of Number 7 ==============');
 console.log(list.indexOf(7));
-console.log(list.reverse().toArray())
+console.log(list.reverse().toArray());
 console.log('\n\n');
 
 console.log('Is Linked List Empty?', list.isEmpty());
 console.log('Size of Linked List:', list.size);
 
 console.log('Is First List Have Loop?', list.isLoopExistsUsingFloyds());
+console.log('Middle Node:', list.middleNode().data);
 
 const listWithLoop = new SinglyLinkedList();
 
@@ -426,3 +439,84 @@ listWithLoop.head.next.next.next.next.next.next.next.next.next.next.next.next =
 console.log('Is First List Have Loop?', listWithLoop.isLoopExistsUsingFloyds());
 console.log('Start Of The Loop:', listWithLoop.findStartOfTheLoop()?.data);
 console.log('Length Of The Loop:', listWithLoop.findLengthOfTheLoop());
+
+const findIntersectionOfTwoLinkListsUsingBruteForce = (
+  list1: SinglyLinkedList<number>,
+  list2: SinglyLinkedList<number>
+): SinglyLinkedListNode<number> | null => {
+  let curr1 = list1.head;
+
+  while (curr1 !== null) {
+    let curr2 = list2.head;
+    while (curr2 !== null) {
+      if (curr1 === curr2) {
+        return curr1;
+      } else {
+        curr2 = curr2.next;
+      }
+    }
+    curr1 = curr1.next;
+  }
+  return null;
+};
+
+const findIntersectionOfTwoLinkListsUsingHashTable = (
+  list1: SinglyLinkedList<number>,
+  list2: SinglyLinkedList<number>
+): SinglyLinkedListNode<number> | null => {
+  const nodes = new Set();
+
+  let curr1 = list1.head;
+
+  while (curr1 !== null) {
+    nodes.add(curr1);
+    curr1 = curr1.next;
+  }
+
+  let curr2 = list2.head;
+  while (curr2 !== null) {
+    if (nodes.has(curr2)) {
+      return curr2;
+    }
+    curr2 = curr2.next;
+  }
+
+  return null;
+};
+
+const findIntersectionOfTwoLinkListsUsingLength = (
+  list1: SinglyLinkedList<number>,
+  list2: SinglyLinkedList<number>
+): SinglyLinkedListNode<number> | null => {
+  let l1 = 0;
+  let l2 = 0;
+
+  let curr1 = list1.head;
+  let curr2 = list2.head;
+
+  while (curr1 !== null) {
+    curr1 = curr1.next;
+    l1++;
+  }
+  while (curr2 !== null) {
+    curr2 = curr2.next;
+    l2++;
+  }
+
+  const d = Math.abs(l1 - l2);
+
+  curr1 = list1.head;
+  curr2 = list2.head;
+
+  if (l1 < l2) {
+    for (let i = 0; i < d; i++) {
+      curr1 = curr1!.next;
+    }
+  } else {
+    for (let i = 0; i < d; i++) {
+      curr2 = curr2!.next;
+    }
+  }
+
+  return null;
+};
