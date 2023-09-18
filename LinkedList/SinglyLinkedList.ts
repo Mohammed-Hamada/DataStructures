@@ -285,6 +285,23 @@ export class SinglyLinkedList<T> {
     this._size--;
   }
 
+  reverse(): SinglyLinkedList<T> {
+    let curr = this._head;
+    let prev = null;
+
+    while (curr !== null) {
+      let next = curr.next;
+
+      curr.next = prev;
+      prev = curr;
+      curr = next;
+    }
+
+    this._head = prev;
+
+    return this;
+  }
+
   indexOf(data: T): number {
     let currNode = this._head;
     let i = 0;
@@ -367,7 +384,7 @@ console.log('To Array:', list.toArray());
 
 console.log('\n============ Index Of Number 7 ==============');
 console.log(list.indexOf(7));
-
+console.log(list.reverse().toArray())
 console.log('\n\n');
 
 console.log('Is Linked List Empty?', list.isEmpty());
